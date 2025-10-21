@@ -23,15 +23,15 @@ def farm(dir, move_dir):
 			else:
 				plant_carrot()
 			move(move_dir)
-		move(dir[it])
+		#move(dir[it])
 		it = 1 - it
 
 def init_drone(num):
 	#print(num)
 	def run(n = num):
 		#change_hat(Hats_list[n % len(Hats_list)])
-		if 2 * n < get_world_size():
-			for i in range(2 * n):
+		if n < get_world_size():
+			for i in range(n):
 				move(North)
 			farm([North, South], East)
 		else:

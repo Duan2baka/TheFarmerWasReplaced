@@ -1,60 +1,109 @@
 clear()
 
-def farm(dir, move_dir):
-	it = 0
-	while True:
-		for j in range(get_world_size()):
-			check_and_harvest()
-			if get_pos_x() < 2:
-				if(get_ground_type() == Grounds.Grassland):
-					till()
-				plant(Entities.Sunflower)
-				use_item(Items.Fertilizer)
-				use_item(Items.Weird_Substance)
-			elif get_pos_y() < 3:
-				plant(Entities.Grass)
-				use_item(Items.Fertilizer)
-				use_item(Items.Weird_Substance)
-			elif (get_pos_y() + get_pos_x()) % 2 == 1:
-				plant(Entities.Tree)
-				use_item(Items.Fertilizer)
-				use_item(Items.Weird_Substance)
-			else:
-				plant_carrot()
-			move(move_dir)
-		move(dir[it])
-		it = 1 - it
+size = get_world_size() // max_drones()
+num = get_world_size() - size * max_drones()
+pos = [0]
+siz = [0]
+for i in range(max_drones() - num):
+	siz.append(size)
+for i in range(num):
+	siz.append(size + 1)
+sum = 0
+for i in range(max_drones()):
+	sum += siz[i + 1]
+	pos.append(get_world_size() - sum)
 
 def init_drone(num):
-	#print(num)
 	def run(n = num):
-		#change_hat(Hats_list[n % len(Hats_list)])
-		if 2 * n < get_world_size():
-			for i in range(2 * n):
-				move(North)
-			farm([North, South], East)
-		else:
-			for i in range(2 * n - get_world_size() + 2):
-				move(East)
-			farm([East, West], North)
+		for i in range(pos[n]):
+			move(North)
+		while True:
+			for i in range(siz[n]):
+				for j in range(get_world_size()):
+					plant_cactus()
+					ws = measure(West)
+					cur = measure()
+					if get_pos_x() > 0:
+						if ws != None and cur < ws:
+							swap(West)
+					st = measure(South)
+					cur = measure()
+					if get_pos_y() > 0  :
+						if st != None and cur < st:
+							swap(South)
+					move(East)
+				if i != siz[n] - 1:
+					move(North)
+			for i in range(siz[n] - 1):
+				move(South)
 	return run
 
 def check_and_harvest():
 	if can_harvest():
 		harvest()
-	if get_water() <= 0.75 and num_items(Items.Water) > 0:
-		use_item(Items.Water)
 
-def plant_carrot():
+def plant_cactus():
 	if(get_ground_type() == Grounds.Grassland):
 		till()
-	plant(Entities.Carrot)
-	use_item(Items.Fertilizer)
-	use_item(Items.Weird_Substance)
+	plant(Entities.Cactus)
 
-it = 1
 while num_drones() < max_drones():
-	spawn_drone(init_drone(it))
-	it += 1
+	spawn_drone(init_drone(num_drones()))
+swapped = 0
 while True:
-	farm([North, South], East)
+	swapped = 0
+	for i in range(siz[max_drones()]):
+		for j in range(get_world_size()):
+			plant_cactus()
+			if get_pos_x() > 0:
+				ws = measure(West)
+				cur = measure()
+				if ws != None and cur < ws:
+					swap(West)
+					swapped = 1
+			if get_pos_y() > 0:
+				st = measure(South)
+				cur = measure()
+				if st != None and cur < st:
+					swap(South)
+					swapped = 1
+			move(East)
+		if i != siz[max_drones()] - 1:
+			move(North)
+	for i in range(siz[max_drones()] - 1):
+		move(South)
+	if swapped == 0:
+		for i in range(get_world_size()):
+			if swapped == 1:
+				break
+			for j in range(get_world_size()):
+				if swapped == 1:
+					break
+				move(East)
+				if get_pos_x() > 0:
+					ws = measure(West)
+					cur = measure()
+					if ws != None and cur < ws:
+						swap(West)
+						swapped = 1
+				if get_pos_y() > 0:
+					st = measure(South)
+					cur = measure()
+					if st != None and cur < st:
+						swap(South)
+						swapped = 1
+				
+			move(North)
+		if swapped == 0:
+			check_and_harvest()
+		else:
+			while get_pos_x() != 0:
+				if get_pos_x() < get_world_size() // 2:
+					move(West)
+				else:
+					move(East)
+			while get_pos_y() != 0:
+				if get_pos_y() < get_world_size() // 2:
+					move(South)
+				else:
+					move(North)

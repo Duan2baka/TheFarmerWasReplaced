@@ -6,26 +6,26 @@ def farm(dir, move_dir):
 	while True:
 		for j in range(get_world_size()):
 			check_and_harvest()
-			if get_pos_x() < 2:
+			if get_pos_x() < 20:
 				if(get_ground_type() == Grounds.Grassland):
 					till()
 				plant(Entities.Sunflower)
-			elif get_pos_y() < 3:
+			elif get_pos_y() < 15:
 				plant(Entities.Grass)
 			elif (get_pos_y() + get_pos_x()) % 2 == 1:
 				plant(Entities.Tree)
 			else:
 				plant_carrot()
 			move(move_dir)
-		move(dir[it])
-		it = 1 - it
+		#move(dir[it])
+		#it = 1 - it
 
 def init_drone(num):
 	#print(num)
 	def run(n = num):
 		#change_hat(Hats_list[n % len(Hats_list)])
-		if 2 * n < get_world_size():
-			for i in range(2 * n):
+		if n < get_world_size():
+			for i in range(n):
 				move(North)
 			farm([North, South], East)
 		else:
