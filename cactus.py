@@ -24,12 +24,12 @@ def init_drone(num):
 					ws = measure(West)
 					cur = measure()
 					if get_pos_x() > 0:
-						if ws != None and cur < ws:
+						if ws != None and cur != None and cur < ws:
 							swap(West)
 					st = measure(South)
 					cur = measure()
 					if get_pos_y() > 0  :
-						if st != None and cur < st:
+						if st != None and cur != None and cur < st:
 							swap(South)
 					move(East)
 				if i != siz[n] - 1:
@@ -58,13 +58,13 @@ while True:
 			if get_pos_x() > 0:
 				ws = measure(West)
 				cur = measure()
-				if ws != None and cur < ws:
+				if ws != None and cur != None and cur < ws:
 					swap(West)
 					swapped = 1
 			if get_pos_y() > 0:
 				st = measure(South)
 				cur = measure()
-				if st != None and cur < st:
+				if st != None and cur != None and cur < st:
 					swap(South)
 					swapped = 1
 			move(East)
@@ -83,13 +83,13 @@ while True:
 				if get_pos_x() > 0:
 					ws = measure(West)
 					cur = measure()
-					if ws != None and cur < ws:
+					if ws != None and cur != None and cur < ws:
 						swap(West)
 						swapped = 1
 				if get_pos_y() > 0:
 					st = measure(South)
 					cur = measure()
-					if st != None and cur < st:
+					if st != None and cur != None and cur < st:
 						swap(South)
 						swapped = 1
 				

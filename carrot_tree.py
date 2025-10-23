@@ -6,16 +6,17 @@ def farm(dir, move_dir):
 	while True:
 		for j in range(get_world_size()):
 			check_and_harvest()
-			if get_pos_x() < 20:
+			if get_pos_x() < 4:
 				if(get_ground_type() == Grounds.Grassland):
 					till()
 				plant(Entities.Sunflower)
-			elif get_pos_y() < 15:
+			elif get_pos_y() < 10:
 				plant(Entities.Grass)
 			elif (get_pos_y() + get_pos_x()) % 2 == 1:
 				plant(Entities.Tree)
 			else:
-				plant_carrot()
+				plant(Entities.Grass)
+				#plant_carrot()
 			move(move_dir)
 		#move(dir[it])
 		#it = 1 - it
