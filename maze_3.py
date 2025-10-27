@@ -1,4 +1,4 @@
-#set_world_size(18)
+set_world_size(5)
 
 def func(num):
 	if num == 1:

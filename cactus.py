@@ -17,7 +17,7 @@ def init_drone(num):
 	def run(n = num):
 		for i in range(pos[n]):
 			move(North)
-		while True:
+		while num_items(Items.Cactus) < 33554432:
 			for i in range(siz[n]):
 				for j in range(get_world_size()):
 					plant_cactus()
@@ -50,7 +50,7 @@ def plant_cactus():
 while num_drones() < max_drones():
 	spawn_drone(init_drone(num_drones()))
 swapped = 0
-while True:
+while num_items(Items.Cactus) < 33554432:
 	swapped = 0
 	for i in range(siz[max_drones()]):
 		for j in range(get_world_size()):
